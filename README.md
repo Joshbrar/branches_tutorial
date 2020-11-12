@@ -19,6 +19,6 @@ Change 1: These are Sheetal's changes to the README file.
 
 Change 2 - Josh made changes to the histogram file and pushed it to github. it is merged along with sheetals new changes.
 
-Change 3 
+Change 3 - Original Change (Not Joshbranch's change)
 
-Change 4
+Change 4 - Original Change (Not Joshbranch's change)
