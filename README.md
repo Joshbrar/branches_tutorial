@@ -13,3 +13,5 @@
   Once  Sheetal creates her own branch , then Josh should create his own branch for further development of code. 
 
 # After the devopment, there should be total of 3 files 
+
+Change 1: These are Sheetal's changes to the README file.
