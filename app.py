@@ -167,12 +167,13 @@ def start(start=None):
             <a href="http://localhost:5000/">Go back to the Hawaii API Routes Main Page</a>
             </html>
             """
-
-    isValidDate = True
-    try :
-        dt.datetime(int(year),int(month),int(day))
-    except ValueError :
-        isValidDate = False
+    # Sheetal - Call the function to check valid date
+    isValidDate = checkValidDate(start_dt)
+    if isValidDate:
+        try :
+            dt.datetime(int(year),int(month),int(day))
+        except ValueError :
+            isValidDate = False
 
     if(isValidDate) :
        # print ("Input date is valid ..")
@@ -251,6 +252,11 @@ def start_end(start=None, end=None):
     session.close()
 
     return jsonify(var_return_start_end_list)
+
+# Sheetal's review:
+def checkValidDate(date):
+
+    return ""
 
 if __name__ == "__main__":
     app.run(debug=True)
