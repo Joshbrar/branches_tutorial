@@ -27,7 +27,7 @@ app = Flask(__name__)
 def home():
     # List all available API Routes.
     return"""<html>
-    Hawaii API Routes
+    <h1 align =Left> Hawaii API Routes</h1>
 
     <br><br><br>
     <ul>
@@ -150,15 +150,41 @@ def start(start=None):
     session = Session(engine)
     start_dt =start
 
-    from_start = session.query(measurement.date, func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).filter(measurement.date >= start_dt).all()
-    start_list = []
+    #Return a JSON list of tmin, tmax, tavg for all dates greater than and equal to the start date.
+
+    # Create function with the same file and send it to Sheetal for review.
+    # Check if the date entered is a valid date or not
+    # future devlopment convert this checking of a valid date into a separate function/or a custom library
+    try :
+        year,month,day =start_dt.split('-')
+    except ValueError :
+        #    " Invalid Date format"
+        print ("Input date is not valid..")
+        return"""<html>
+            <br><br><br>
+            Please enter a valid  Start Date as in 'YYYY-MM-DD/YYYY-MM-DD' format
+            <br><br>
+            <a href="http://localhost:5000/">Go back to the Hawaii API Routes Main Page</a>
+            </html>
+            """
+
+    isValidDate = True
+    try :
+        dt.datetime(int(year),int(month),int(day))
+    except ValueError :
+        isValidDate = False
+
+    if(isValidDate) :
+       # print ("Input date is valid ..")
+        from_start = session.query(measurement.date, func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).filter(measurement.date >= start_dt).all()
+        start_list = []
         
-    for vary in from_start:
-        start_dict = {}
-        start_dict["min"] = vary[1]
-        start_dict["avg"] = vary[2]
-        start_dict["max"] = vary[3]
-        start_list.append(start_dict)
+        for vary in from_start:
+            start_dict = {}
+            start_dict["min"] = vary[1]
+            start_dict["avg"] = vary[2]
+            start_dict["max"] = vary[3]
+            start_list.append(start_dict)
 
         var_return_start_list = {
             "Start date" : start_dt,
@@ -167,7 +193,16 @@ def start(start=None):
         session.close()
 
         return jsonify(var_return_start_list)
- 
+    else :
+        " Invalid Date "
+        #print ("Input date is not valid..")
+        return"""<html>
+            <br><br><br>
+            Please enter a valid  Start Date as in 'YYYY-MM-DD' format
+            <br><br>
+            <a href="http://localhost:5000/">Go back to the Hawaii API Routes Main Page</a>
+            </html>
+            """
 
 
 @app.route("/api/v1.0/<start>/<end>")
@@ -176,7 +211,28 @@ def start_end(start=None, end=None):
     session = Session(engine)
     start_dt = start
     end_dt   = end
-  
+    #Return a JSON list of tmin, tmax, tavg for all dates greater than and equal to the start date.
+     # Check if the date entered is a valid date or not
+    # future devlopment convert this checking of a valid date into a separate function/or a custom library
+    try :
+        year_st,month_st,day_st =start_dt.split('-')
+        year_end,month_end,day_st =end_dt.split('-')
+        dt.datetime(int(year_st),int(month_st),int(day_st))
+        dt.datetime(int(year_end),int(month_end),int(day_st))
+
+    except ValueError :
+        #    " Invalid Date format"
+        print ("Input date is not valid..")
+        #return ("Please enter a valid  Start Date/End Date  as in 'YYYY-MM-DD/YYYY-MM-DD' format")
+        return"""<html>
+            <br><br><br>
+            Please enter a valid  Start Date/End Date  as in 'YYYY-MM-DD/YYYY-MM-DD' format
+            <br><br>
+            <a href="http://localhost:5000/">Go back to the Hawaii API Routes Main Page</a>
+            </html>
+            """
+
+
     from_start = session.query(measurement.date, func.min(measurement.tobs), func.avg(measurement.tobs), func.max(measurement.tobs)).filter(measurement.date >= start_dt).filter(measurement.date <= end_dt).all()
     start_end_list = []
      
